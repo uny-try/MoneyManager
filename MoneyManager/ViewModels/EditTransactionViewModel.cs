@@ -1,4 +1,3 @@
-using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MoneyManager.Models;
@@ -17,7 +16,11 @@ public partial class EditTransactionViewModel : ObservableObject
     [ObservableProperty]
     private Guid? transactionId;
     [ObservableProperty]
-    private TransactionType type;
+    private bool isIncome;
+    [ObservableProperty]
+    private bool isExpense;
+    [ObservableProperty]
+    private bool isTransfer;
     [ObservableProperty]
     private DateTime date;
     [ObservableProperty]
@@ -53,11 +56,11 @@ public partial class EditTransactionViewModel : ObservableObject
         var categories = _categoryRepository.GetAllCategories().ToList();
         IncomeCategories = categories.Where(c => c.Type == CategoryType.Income).ToList();
         ExpenseCategories = categories.Where(c => c.Type == CategoryType.Expense).ToList();
-        
+
         Accounts = _accountRepository.GetAllAccounts().ToList();
 
         Date = DateTime.Now;
-        Type = TransactionType.Expense;
+        IsExpense = true;
     }
 
     public void LoadTransaction(Guid? id = null)
@@ -66,7 +69,9 @@ public partial class EditTransactionViewModel : ObservableObject
         {
             // 新規取引の場合はデフォルト値を設定
             Date = DateTime.Now;
-            Type = TransactionType.Expense;
+            IsIncome = false;
+            IsExpense = true;
+            IsTransfer = false;
             FromAccount = null;
             ToAccount = null;
             Category = null;
@@ -80,7 +85,9 @@ public partial class EditTransactionViewModel : ObservableObject
         {
             // 既存取引の場合は値を読み込む
             TransactionId = transaction.Id;
-            Type = transaction.Type;
+            IsIncome = transaction.Type == TransactionType.Income;
+            IsExpense = transaction.Type == TransactionType.Expense;
+            IsTransfer = transaction.Type == TransactionType.Transfer;
             Date = transaction.Date;
             FromAccount = transaction.FromAccount;
             ToAccount = transaction.ToAccount;
@@ -93,9 +100,15 @@ public partial class EditTransactionViewModel : ObservableObject
     [RelayCommand]
     public Task SaveTransaction()
     {
+        TransactionType transactionType = IsIncome
+                                          ? TransactionType.Income
+                                          : IsExpense
+                                          ? TransactionType.Expense
+                                          : TransactionType.Transfer;
+
         var newTransaction = new Transaction(
             date: Date,
-            type: Type,
+            type: transactionType,
             fromAccount: FromAccount,
             toAccount: ToAccount,
             category: Category,
@@ -104,11 +117,11 @@ public partial class EditTransactionViewModel : ObservableObject
             );
 
         // 入力のチェック
-        if (Type == TransactionType.Expense)
+        if (IsExpense)
         {
             newTransaction.ToAccount = null;
         }
-        else if (Type == TransactionType.Income)
+        else if (IsIncome)
         {
             newTransaction.FromAccount = null;
         }
