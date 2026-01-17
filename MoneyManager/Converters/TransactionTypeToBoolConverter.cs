@@ -1,29 +1,26 @@
+using System;
 using System.Globalization;
 using MoneyManager.Models;
 
 namespace MoneyManager.Converters;
 
-public class TransactionTypeToStringConverter : IValueConverter
+public class TransactionTypeToBoolConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is TransactionType transactionType)
+        if (value is TransactionType transactionType && parameter is string targetTypeString)
         {
-            return transactionType switch
+            if (Enum.TryParse<TransactionType>(targetTypeString, out var targetTransactionType))
             {
-                TransactionType.Income => "収入",
-                TransactionType.Expense => "支出",
-                TransactionType.Transfer => "振替",
-                _ => "不明",
-            };
+                return transactionType == targetTransactionType;
+            }
         }
 
-        return "不明";
+        return false;
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
     }
-
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MoneyManager.Models"
              xmlns:viewModels="clr-namespace:MoneyManager.ViewModels"
              xmlns:converters="clr-namespace:MoneyManager.Converters"
              x:Class="MoneyManager.Views.EditTransactionPage"
@@ -11,21 +12,19 @@
             <converters:TransactionTypeToBoolConverter x:Key="TransactionTypeToBoolConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <VerticalStackLayout>
 
+    <VerticalStackLayout>
         <!-- タイプ選択用ラジオボタン -->
-        <HorizontalStackLayout>
+        <HorizontalStackLayout RadioButtonGroup.GroupName="TransactionTypeGroup"
+                               RadioButtonGroup.SelectedValue="{Binding SelectedTransactionType, Mode=TwoWay}">
             <RadioButton Content="収入"
-                         GroupName="TypeGroup"
-                         IsChecked="{Binding IsIncome}"
+                         Value="{x:Static models:TransactionType.Income}"
                          Margin="5,0"/>
             <RadioButton Content="支出"
-                         GroupName="TypeGroup"
-                        IsChecked="{Binding IsExpense}"
+                         Value="{x:Static models:TransactionType.Expense}"
                          Margin="5,0"/>
             <RadioButton Content="振替"
-                         GroupName="TypeGroup"
-                         IsChecked="{Binding IsTransfer}"
+                         Value="{x:Static models:TransactionType.Transfer}"
                          Margin="5,0"/>
         </HorizontalStackLayout>
 
@@ -34,7 +33,9 @@
                     Format="d"/>
 
         <!-- 収入用フィールド -->
-        <StackLayout IsVisible="{Binding IsIncome}">
+        <StackLayout IsVisible="{Binding SelectedTransactionType,
+                                 Converter={StaticResource TransactionTypeToBoolConverter},
+                                 ConverterParameter=Income}">
             <Picker Title="入金口座"
                     ItemsSource="{Binding Accounts}"
                     SelectedItem="{Binding ToAccount}">
@@ -42,7 +43,7 @@
                     <Binding Path="Name"/>
                 </Picker.ItemDisplayBinding>
             </Picker>
-            <Picker Title="収入カテゴリー"
+            <Picker Title="分類"
                     ItemsSource="{Binding IncomeCategories}"
                     SelectedItem="{Binding Category}">
                 <Picker.ItemDisplayBinding>
@@ -52,7 +53,9 @@
         </StackLayout>
 
         <!-- 支出用フィールド -->
-        <StackLayout IsVisible="{Binding IsExpense}">
+        <StackLayout IsVisible="{Binding SelectedTransactionType,
+                                 Converter={StaticResource TransactionTypeToBoolConverter},
+                                 ConverterParameter=Expense}">
             <Picker Title="出金口座"
                     ItemsSource="{Binding Accounts}"
                     SelectedItem="{Binding FromAccount}">
@@ -60,7 +63,7 @@
                     <Binding Path="Name"/>
                 </Picker.ItemDisplayBinding>
             </Picker>
-            <Picker Title="支出カテゴリー"
+            <Picker Title="分類"
                     ItemsSource="{Binding ExpenseCategories}"
                     SelectedItem="{Binding Category}">
                 <Picker.ItemDisplayBinding>
@@ -70,7 +73,9 @@
         </StackLayout>
 
         <!-- 振替用フィールド -->
-        <StackLayout IsVisible="{Binding IsTransfer}">
+        <StackLayout IsVisible="{Binding SelectedTransactionType,
+                                 Converter={StaticResource TransactionTypeToBoolConverter},
+                                 ConverterParameter=Transfer}">
             <Picker Title="出金口座"
                     ItemsSource="{Binding Accounts}"
                     SelectedItem="{Binding FromAccount}">
