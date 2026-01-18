@@ -9,4 +9,13 @@ public partial class AllTransactionsPage : ContentPage
         InitializeComponent();
         BindingContext = viewModel;
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is AllTransactionsViewModel viewModel)
+        {
+            viewModel.LoadAllTransactionsCommand.Execute(null);
+        }
+    }
 }

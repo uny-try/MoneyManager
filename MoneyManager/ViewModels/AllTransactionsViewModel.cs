@@ -22,7 +22,6 @@ public partial class AllTransactionsViewModel : ObservableObject
         _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
         Transactions = new ObservableCollection<Transaction>();
-        LoadAllTransactions();
     }
 
     [RelayCommand]

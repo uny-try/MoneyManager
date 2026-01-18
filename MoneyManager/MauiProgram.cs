@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Globalization;
+using Microsoft.Extensions.Logging;
 using MoneyManager.Models.Interfaces;
 using MoneyManager.Models.Services;
 using MoneyManager.ViewModels;

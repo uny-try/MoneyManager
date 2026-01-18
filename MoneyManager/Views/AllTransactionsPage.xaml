@@ -1,17 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MoneyManager.Models"
              xmlns:viewModels="clr-namespace:MoneyManager.ViewModels"
+             xmlns:converters="clr-namespace:MoneyManager.Converters"
              x:Class="MoneyManager.Views.AllTransactionsPage"
              x:DataType="viewModels:AllTransactionsViewModel"
              Title="All Transactions">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:TransactionTypeToStringConverter x:Key="TransactionTypeToStringConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <VerticalStackLayout>
-        <Button
-            Text="Add Transaction"
-            Command="{Binding GoToEditTransactionCommand}"
-            HorizontalOptions="Center"
-            VerticalOptions="Start" />
+        <!-- コマンドボタン -->
+        <HorizontalStackLayout HorizontalOptions="End">
+            <Button Text="Summary"/>
+            <Button Text="Add Transaction"
+                    Command="{Binding GoToEditTransactionCommand}"/>
+        </HorizontalStackLayout>
 
+        <!-- 取引リスト -->
+        <CollectionView ItemsSource="{Binding Transactions}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Transaction">
+                    <Border Margin="1"
+                           Padding="8">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Date, StringFormat='{0:d日(ddd)}'}"/>
+                            <Label Grid.Row="0" Grid.Column="1">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding FromAccount.Name}"/>
+                                        <Span Text=" → "/>
+                                        <Span Text="{Binding ToAccount.Name}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Grid.Row="0" Grid.Column="2"
+                                   Text="{Binding Category.Name}"/>
+                            <Label Grid.Row="1" Grid.Column="0"
+                                   Text="{Binding Type, Converter={StaticResource TransactionTypeToStringConverter}}"/>
+                            <Label Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding Note}"/>
+                            <Label Grid.Row="1" Grid.Column="2"
+                                   Text="{Binding Amount, StringFormat='{0:C}'}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>
