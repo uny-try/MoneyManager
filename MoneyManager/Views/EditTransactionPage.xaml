@@ -6,7 +6,7 @@
              xmlns:converters="clr-namespace:MoneyManager.Converters"
              x:Class="MoneyManager.Views.EditTransactionPage"
              x:DataType="viewModels:EditTransactionViewModel"
-             Title="EditTransactionPage">
+             Title="取引編集">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:TransactionTypeToBoolConverter x:Key="TransactionTypeToBoolConverter"/>

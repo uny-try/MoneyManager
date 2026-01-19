@@ -45,4 +45,11 @@ public partial class AllTransactionsViewModel : ObservableObject
         }
         return _navigationService.NavigateToAsync(route);
     }
+
+    [RelayCommand]
+    public void DeleteTransaction(Transaction transaction)
+    {
+        _transactionRepository.DeleteTransaction(transaction);
+        LoadAllTransactions();
+    }
 }

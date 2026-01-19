@@ -6,7 +6,8 @@
              xmlns:converters="clr-namespace:MoneyManager.Converters"
              x:Class="MoneyManager.Views.AllTransactionsPage"
              x:DataType="viewModels:AllTransactionsViewModel"
-             Title="All Transactions">
+             x:Name="Page"
+             Title="取引一覧">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:TransactionTypeToStringConverter x:Key="TransactionTypeToStringConverter"/>
@@ -16,8 +17,8 @@
     <VerticalStackLayout>
         <!-- コマンドボタン -->
         <HorizontalStackLayout HorizontalOptions="End">
-            <Button Text="Summary"/>
-            <Button Text="Add Transaction"
+            <Button Text="資産"/>
+            <Button Text="追加"
                     Command="{Binding GoToEditTransactionCommand}"/>
         </HorizontalStackLayout>
 
@@ -25,8 +26,8 @@
         <CollectionView ItemsSource="{Binding Transactions}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Transaction">
-                    <Border Margin="1"
-                           Padding="8">
+                    <SwipeView
+                        Margin="5">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
@@ -37,9 +38,11 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="80"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0"
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
                                    Text="{Binding Date, StringFormat='{0:d日(ddd)}'}"/>
-                            <Label Grid.Row="0" Grid.Column="1">
+                            <Label Grid.Row="0"
+                                   Grid.Column="1">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="{Binding FromAccount.Name}"/>
@@ -48,16 +51,32 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Label Grid.Row="0" Grid.Column="2"
+                            <Label Grid.Row="0"
+                                   Grid.Column="2"
                                    Text="{Binding Category.Name}"/>
-                            <Label Grid.Row="1" Grid.Column="0"
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
                                    Text="{Binding Type, Converter={StaticResource TransactionTypeToStringConverter}}"/>
-                            <Label Grid.Row="1" Grid.Column="1"
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
                                    Text="{Binding Note}"/>
-                            <Label Grid.Row="1" Grid.Column="2"
+                            <Label Grid.Row="1"
+                                   Grid.Column="2"
                                    Text="{Binding Amount, StringFormat='{0:C}'}"/>
                         </Grid>
-                    </Border>
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Reveal">
+                                <SwipeItem Text="変更"
+                                           BackgroundColor="DarkBlue"
+                                           Command="{Binding BindingContext.GoToEditTransactionCommand, Source={x:Reference Page}}"
+                                           CommandParameter="{Binding Id}"/>
+                                <SwipeItem Text="削除"
+                                           BackgroundColor="DarkRed"
+                                           Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Page}}"
+                                           CommandParameter="{Binding}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
