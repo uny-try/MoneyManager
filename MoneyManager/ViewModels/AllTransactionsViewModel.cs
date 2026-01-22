@@ -14,24 +14,34 @@ public partial class AllTransactionsViewModel : ObservableObject
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
-    private ObservableCollection<Transaction> transactions;
+    private ObservableCollection<Transaction> allTransactions;
+    [ObservableProperty]
+    private ObservableCollection<Transaction> monthlyTransactions;
+    [ObservableProperty]
+    private decimal monthlyTotalIncome;
+    [ObservableProperty]
+    private decimal monthlyTotalExpense;
+    [ObservableProperty]
+    private DateTime currentMonth;
 
     public AllTransactionsViewModel(ITransactionRepository transactionRepository, INavigationService navigationService)
     {
         _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
         _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
-        Transactions = new ObservableCollection<Transaction>();
+        AllTransactions = new ObservableCollection<Transaction>();
+        MonthlyTransactions = new ObservableCollection<Transaction>();
+        CurrentMonth = DateTime.Now;
     }
 
     [RelayCommand]
     private void LoadAllTransactions()
     {
-        Transactions.Clear();
+        AllTransactions.Clear();
         var transactions = _transactionRepository.GetAllTransactions();
         foreach (var transaction in transactions)
         {
-            Transactions.Add(transaction);
+            AllTransactions.Add(transaction);
         }
     }
 
@@ -51,5 +61,36 @@ public partial class AllTransactionsViewModel : ObservableObject
     {
         _transactionRepository.DeleteTransaction(transaction);
         LoadAllTransactions();
+        LoadMonthlyTransactions();
+    }
+
+    [RelayCommand]
+    private void LoadMonthlyTransactions()
+    {
+        MonthlyTransactions = new ObservableCollection<Transaction>(
+            AllTransactions.Where(t => t.Date.Month == CurrentMonth.Month && t.Date.Year == CurrentMonth.Year)
+        );
+
+        MonthlyTotalIncome = MonthlyTransactions
+            .Where(t => t.Type == TransactionType.Income)
+            .Sum(t => t.Amount);
+
+        MonthlyTotalExpense = MonthlyTransactions
+            .Where(t => t.Type == TransactionType.Expense)
+            .Sum(t => t.Amount);
+    }
+
+    [RelayCommand]
+    private void GoToPreviousMonth()
+    {
+        CurrentMonth = CurrentMonth.AddMonths(-1);
+        LoadMonthlyTransactions();
+    }
+
+    [RelayCommand]
+    private void GoToNextMonth()
+    {
+        CurrentMonth = CurrentMonth.AddMonths(1);
+        LoadMonthlyTransactions();
     }
 }

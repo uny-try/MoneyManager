@@ -22,8 +22,42 @@
                     Command="{Binding GoToEditTransactionCommand}"/>
         </HorizontalStackLayout>
 
+        <!-- 月ナビゲーション -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Text="前の月"
+                    Command="{Binding GoToPreviousMonthCommand}"/>
+            <Label Grid.Column="1"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                Text="{Binding CurrentMonth, StringFormat='{0:yyyy年MM月}'}"/>
+            <Button Grid.Column="2"
+                    Text="次の月"
+                    Command="{Binding GoToNextMonthCommand}"/>
+
+        </Grid>
+
+        <!-- 月合計表示 -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Text="{Binding MonthlyTotalIncome, StringFormat='収入合計: {0:C}'}"
+                   HorizontalOptions="Center"/>
+            <Label Grid.Column="1"
+                   Text="{Binding MonthlyTotalExpense, StringFormat='支出合計: {0:C}'}"
+                   HorizontalOptions="Center"/>
+        </Grid>
+
         <!-- 取引リスト -->
-        <CollectionView ItemsSource="{Binding Transactions}">
+        <CollectionView ItemsSource="{Binding MonthlyTransactions}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Transaction">
                     <SwipeView
