@@ -66,6 +66,12 @@ public partial class AllTransactionsViewModel : ObservableObject
     }
 
     [RelayCommand]
+    public Task GoToAccountSummary()
+    {
+        return _navigationService.NavigateToAsync("AccountSummaryPage");
+    }
+
+    [RelayCommand]
     public void DeleteTransaction(Transaction transaction)
     {
         _transactionRepository.DeleteTransaction(transaction);

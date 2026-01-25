@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MoneyManager.Models"
+             xmlns:viewModels="clr-namespace:MoneyManager.ViewModels"
+             x:Class="MoneyManager.Views.AccountSummaryPage"
+             x:DataType="viewModels:AccountSummaryViewModel"
+             Title="資産">
+    <VerticalStackLayout Padding="10">
+        <Label Text="総残高" FontAttributes="Bold" FontSize="20"/>
+        <Label Text="{Binding TotalBalance, StringFormat='{}{0:C}'}" FontSize="24" TextColor="Green"/>
+
+        <CollectionView ItemsSource="{Binding Accounts}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Account">
+                    <Border Margin="0,5" Padding="10">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="18"/>
+                            <Label Text="{Binding Balance, StringFormat='残高: {0:C}'}" FontSize="16"/>
+                            <Label Text="{Binding UnsettledAmount, StringFormat='未決済額: {0:C}'}" FontSize="16" TextColor="Red"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

@@ -27,6 +27,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<INavigationService, NavigationService>();
         builder.Services.AddSingleton<AllTransactionsViewModel>();
         builder.Services.AddTransient<EditTransactionViewModel>();
+        builder.Services.AddTransient<AccountSummaryViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();

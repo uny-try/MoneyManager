@@ -17,7 +17,8 @@
     <VerticalStackLayout>
         <!-- コマンドボタン -->
         <HorizontalStackLayout HorizontalOptions="End">
-            <Button Text="資産"/>
+            <Button Text="資産"
+                    Command="{Binding GoToAccountSummaryCommand}"/>
             <Button Text="追加"
                     Command="{Binding GoToEditTransactionCommand}"/>
         </HorizontalStackLayout>
