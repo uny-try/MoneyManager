@@ -74,6 +74,7 @@ public class FileTransactionRepository : ITransactionRepository
 
     private void SaveTransactions(List<Transaction> transactions)
     {
+        transactions.Sort((t1, t2) => t1.Date.CompareTo(t2.Date));
         var json = JsonSerializer.Serialize(transactions, new JsonSerializerOptions
         {
             WriteIndented = true
