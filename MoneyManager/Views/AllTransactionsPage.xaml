@@ -17,6 +17,11 @@
     <VerticalStackLayout>
         <!-- コマンドボタン -->
         <HorizontalStackLayout HorizontalOptions="End">
+            <!-- フィルターピッカー -->
+            <Picker Title="フィルター"
+                    ItemsSource="{Binding Accounts}"
+                    SelectedItem="{Binding AccountFilter}"
+                    ItemDisplayBinding="{Binding Name}"/>
             <Button Text="資産"
                     Command="{Binding GoToAccountSummaryCommand}"/>
             <Button Text="追加"
@@ -36,7 +41,8 @@
             <Label Grid.Column="1"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
-                Text="{Binding CurrentMonth, StringFormat='{0:yyyy年MM月}'}"/>
+                   FontSize="24"
+                   Text="{Binding CurrentMonth, StringFormat='{0:yyyy年MM月}'}"/>
             <Button Grid.Column="2"
                     Text="次の月"
                     Command="{Binding GoToNextMonthCommand}"/>
@@ -51,9 +57,11 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0"
                    Text="{Binding FilteredTotalIncome, StringFormat='収入合計: {0:C}'}"
+                   FontSize="Medium"
                    HorizontalOptions="Center"/>
             <Label Grid.Column="1"
                    Text="{Binding FilteredTotalExpense, StringFormat='支出合計: {0:C}'}"
+                   FontSize="Medium"
                    HorizontalOptions="Center"/>
         </Grid>
 
@@ -115,10 +123,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <!-- フィルターピッカー -->
-        <Picker Title="フィルター"
-                ItemsSource="{Binding Accounts}"
-                SelectedItem="{Binding AccountFilter}"
-                ItemDisplayBinding="{Binding Name}"/>
     </VerticalStackLayout>
 </ContentPage>

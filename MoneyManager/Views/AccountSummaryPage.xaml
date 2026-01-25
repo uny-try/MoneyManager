@@ -7,18 +7,39 @@
              x:DataType="viewModels:AccountSummaryViewModel"
              Title="資産">
     <VerticalStackLayout Padding="10">
-        <Label Text="総残高" FontAttributes="Bold" FontSize="20"/>
-        <Label Text="{Binding TotalBalance, StringFormat='{}{0:C}'}" FontSize="24" TextColor="Green"/>
+        <Label Text="総残高"
+               FontAttributes="Bold"
+               FontSize="20"/>
+        <Label Text="{Binding TotalBalance, StringFormat='{}{0:C}'}"
+               FontSize="24"/>
 
         <CollectionView ItemsSource="{Binding Accounts}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Account">
-                    <Border Margin="0,5" Padding="10">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="18"/>
-                            <Label Text="{Binding Balance, StringFormat='残高: {0:C}'}" FontSize="16"/>
-                            <Label Text="{Binding UnsettledAmount, StringFormat='未決済額: {0:C}'}" FontSize="16" TextColor="Red"/>
-                        </VerticalStackLayout>
+                    <Border Margin="0,5"
+                            Padding="10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.RowSpan="2"
+                                   VerticalOptions="Center"
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold"
+                                   FontSize="18"/>
+                            <Label Grid.Column="1"
+                                   Text="{Binding Balance, StringFormat='残高: {0:C}'}"
+                                   FontSize="16"/>
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding UnsettledAmount, StringFormat='未決済額: {0:C}'}"
+                                   FontSize="16"/>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
