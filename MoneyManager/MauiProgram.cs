@@ -21,9 +21,12 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        builder.Services.AddSingleton<ITransactionRepository, InMemoryTransactionRepository>();
         builder.Services.AddSingleton<IAccountRepository, InMemoryAccountRepository>();
         builder.Services.AddSingleton<ICategoryRepository, InMemoryCategoryRepository>();
+        builder.Services.AddSingleton<ITransactionRepository>(
+            _ => new FileTransactionRepository(FileSystem.AppDataDirectory,
+                                                _.GetRequiredService<IAccountRepository>(),
+                                                _.GetRequiredService<ICategoryRepository>()));
         builder.Services.AddSingleton<INavigationService, NavigationService>();
         builder.Services.AddSingleton<AllTransactionsViewModel>();
         builder.Services.AddTransient<EditTransactionViewModel>();
