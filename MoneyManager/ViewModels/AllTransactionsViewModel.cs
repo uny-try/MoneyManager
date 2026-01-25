@@ -10,28 +10,37 @@ namespace MoneyManager.ViewModels;
 public partial class AllTransactionsViewModel : ObservableObject
 {
     private readonly ITransactionRepository _transactionRepository;
-
+    private readonly IAccountRepository _accountRepository;
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
     private ObservableCollection<Transaction> allTransactions;
     [ObservableProperty]
-    private ObservableCollection<Transaction> monthlyTransactions;
+    private ObservableCollection<Transaction> filteredTransactions;
     [ObservableProperty]
-    private decimal monthlyTotalIncome;
+    private decimal filteredTotalIncome;
     [ObservableProperty]
-    private decimal monthlyTotalExpense;
+    private decimal filteredTotalExpense;
     [ObservableProperty]
     private DateTime currentMonth;
+    [ObservableProperty]
+    private ObservableCollection<Account> accounts;
+    [ObservableProperty]
+    private Account accountFilter;
 
-    public AllTransactionsViewModel(ITransactionRepository transactionRepository, INavigationService navigationService)
+    public AllTransactionsViewModel(ITransactionRepository transactionRepository, IAccountRepository accountRepository, INavigationService navigationService)
     {
         _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
+        _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository));
         _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
         AllTransactions = new ObservableCollection<Transaction>();
-        MonthlyTransactions = new ObservableCollection<Transaction>();
+        FilteredTransactions = new ObservableCollection<Transaction>();
         CurrentMonth = DateTime.Now;
+
+        Accounts = new ObservableCollection<Account>(_accountRepository.GetAllAccounts());
+        Accounts.Insert(0, new Account("すべて"));
+        AccountFilter = Accounts[0];
     }
 
     [RelayCommand]
@@ -61,21 +70,22 @@ public partial class AllTransactionsViewModel : ObservableObject
     {
         _transactionRepository.DeleteTransaction(transaction);
         LoadAllTransactions();
-        LoadMonthlyTransactions();
+        LoadFilteredTransactions();
     }
 
     [RelayCommand]
-    private void LoadMonthlyTransactions()
+    private void LoadFilteredTransactions()
     {
-        MonthlyTransactions = new ObservableCollection<Transaction>(
+        FilteredTransactions = new ObservableCollection<Transaction>(
             AllTransactions.Where(t => t.Date.Month == CurrentMonth.Month && t.Date.Year == CurrentMonth.Year)
+                            .Where(t => AccountFilter.Name == "すべて" || t.FromAccount?.Name == AccountFilter.Name || t.ToAccount?.Name == AccountFilter.Name)
         );
 
-        MonthlyTotalIncome = MonthlyTransactions
+        FilteredTotalIncome = FilteredTransactions
             .Where(t => t.Type == TransactionType.Income)
             .Sum(t => t.Amount);
 
-        MonthlyTotalExpense = MonthlyTransactions
+        FilteredTotalExpense = FilteredTransactions
             .Where(t => t.Type == TransactionType.Expense)
             .Sum(t => t.Amount);
     }
@@ -84,13 +94,18 @@ public partial class AllTransactionsViewModel : ObservableObject
     private void GoToPreviousMonth()
     {
         CurrentMonth = CurrentMonth.AddMonths(-1);
-        LoadMonthlyTransactions();
+        LoadFilteredTransactions();
     }
 
     [RelayCommand]
     private void GoToNextMonth()
     {
         CurrentMonth = CurrentMonth.AddMonths(1);
-        LoadMonthlyTransactions();
+        LoadFilteredTransactions();
+    }
+
+    partial void OnAccountFilterChanged(Account value)
+    {
+        LoadFilteredTransactions();
     }
 }

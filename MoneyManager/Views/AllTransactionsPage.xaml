@@ -49,15 +49,15 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0"
-                   Text="{Binding MonthlyTotalIncome, StringFormat='収入合計: {0:C}'}"
+                   Text="{Binding FilteredTotalIncome, StringFormat='収入合計: {0:C}'}"
                    HorizontalOptions="Center"/>
             <Label Grid.Column="1"
-                   Text="{Binding MonthlyTotalExpense, StringFormat='支出合計: {0:C}'}"
+                   Text="{Binding FilteredTotalExpense, StringFormat='支出合計: {0:C}'}"
                    HorizontalOptions="Center"/>
         </Grid>
 
         <!-- 取引リスト -->
-        <CollectionView ItemsSource="{Binding MonthlyTransactions}">
+        <CollectionView ItemsSource="{Binding FilteredTransactions}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Transaction">
                     <SwipeView
@@ -114,5 +114,10 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        <!-- フィルターピッカー -->
+        <Picker Title="フィルター"
+                ItemsSource="{Binding Accounts}"
+                SelectedItem="{Binding AccountFilter}"
+                ItemDisplayBinding="{Binding Name}"/>
     </VerticalStackLayout>
 </ContentPage>

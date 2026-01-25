@@ -16,7 +16,7 @@ public partial class AllTransactionsPage : ContentPage
         if (BindingContext is AllTransactionsViewModel viewModel)
         {
             viewModel.LoadAllTransactionsCommand.Execute(null);
-            viewModel.LoadMonthlyTransactionsCommand.Execute(null);
+            viewModel.LoadFilteredTransactionsCommand.Execute(null);
         }
     }
 }
