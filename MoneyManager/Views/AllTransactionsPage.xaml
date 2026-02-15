@@ -14,9 +14,16 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <VerticalStackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <!-- コマンドボタン -->
-        <HorizontalStackLayout HorizontalOptions="End">
+        <HorizontalStackLayout HorizontalOptions="End"
+                               Grid.Row="0">
             <!-- フィルターピッカー -->
             <Picker Title="フィルター"
                     ItemsSource="{Binding Accounts}"
@@ -29,7 +36,7 @@
         </HorizontalStackLayout>
 
         <!-- 月ナビゲーション -->
-        <Grid>
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -50,7 +57,7 @@
         </Grid>
 
         <!-- 月合計表示 -->
-        <Grid>
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -66,7 +73,8 @@
         </Grid>
 
         <!-- 取引リスト -->
-        <CollectionView ItemsSource="{Binding FilteredTransactions}">
+        <CollectionView ItemsSource="{Binding FilteredTransactions}"
+                        Grid.Row="3">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Transaction">
                     <SwipeView
@@ -123,5 +131,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>
