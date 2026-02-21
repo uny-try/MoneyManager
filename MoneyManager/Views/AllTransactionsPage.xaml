@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:MoneyManager.Models"
-             xmlns:viewModels="clr-namespace:MoneyManager.ViewModels"
-             xmlns:converters="clr-namespace:MoneyManager.Converters"
-             x:Class="MoneyManager.Views.AllTransactionsPage"
-             x:DataType="viewModels:AllTransactionsViewModel"
-             x:Name="Page"
-             Title="取引一覧">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:MoneyManager.Models"
+    xmlns:viewModels="clr-namespace:MoneyManager.ViewModels"
+    xmlns:converters="clr-namespace:MoneyManager.Converters"
+    x:Class="MoneyManager.Views.AllTransactionsPage"
+    x:DataType="viewModels:AllTransactionsViewModel"
+    x:Name="Page"
+    Title="取引一覧">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:TransactionTypeToStringConverter x:Key="TransactionTypeToStringConverter"/>
@@ -22,17 +23,21 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!-- コマンドボタン -->
-        <HorizontalStackLayout HorizontalOptions="End"
-                               Grid.Row="0">
+        <HorizontalStackLayout
+            HorizontalOptions="End"
+            Grid.Row="0">
             <!-- フィルターピッカー -->
-            <Picker Title="フィルター"
-                    ItemsSource="{Binding Accounts}"
-                    SelectedItem="{Binding AccountFilter}"
-                    ItemDisplayBinding="{Binding Name}"/>
-            <Button Text="資産"
-                    Command="{Binding GoToAccountSummaryCommand}"/>
-            <Button Text="追加"
-                    Command="{Binding GoToEditTransactionCommand}"/>
+            <Picker
+                Title="フィルター"
+                ItemsSource="{Binding Accounts}"
+                SelectedItem="{Binding AccountFilter}"
+                ItemDisplayBinding="{Binding Name}"/>
+            <Button
+                Text="資産"
+                Command="{Binding GoToAccountSummaryCommand}"/>
+            <Button
+                Text="追加"
+                Command="{Binding GoToEditTransactionCommand}"/>
         </HorizontalStackLayout>
 
         <!-- 月ナビゲーション -->
@@ -42,17 +47,20 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0"
-                    Text="前の月"
-                    Command="{Binding GoToPreviousMonthCommand}"/>
-            <Label Grid.Column="1"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontSize="24"
-                   Text="{Binding CurrentMonth, StringFormat='{0:yyyy年MM月}'}"/>
-            <Button Grid.Column="2"
-                    Text="次の月"
-                    Command="{Binding GoToNextMonthCommand}"/>
+            <Button
+                Grid.Column="0"
+                Text="前の月"
+                Command="{Binding GoToPreviousMonthCommand}"/>
+            <Label
+                Grid.Column="1"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                FontSize="24"
+                Text="{Binding CurrentMonth, StringFormat='{0:yyyy年MM月}'}"/>
+            <Button
+                Grid.Column="2"
+                Text="次の月"
+                Command="{Binding GoToNextMonthCommand}"/>
 
         </Grid>
 
@@ -62,23 +70,25 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0"
-                   Text="{Binding FilteredTotalIncome, StringFormat='収入合計: {0:C}'}"
-                   FontSize="Medium"
-                   HorizontalOptions="Center"/>
-            <Label Grid.Column="1"
-                   Text="{Binding FilteredTotalExpense, StringFormat='支出合計: {0:C}'}"
-                   FontSize="Medium"
-                   HorizontalOptions="Center"/>
+            <Label
+                Grid.Column="0"
+                Text="{Binding FilteredTotalIncome, StringFormat='収入合計: {0:C}'}"
+                FontSize="Medium"
+                HorizontalOptions="Center"/>
+            <Label
+                Grid.Column="1"
+                Text="{Binding FilteredTotalExpense, StringFormat='支出合計: {0:C}'}"
+                FontSize="Medium"
+                HorizontalOptions="Center"/>
         </Grid>
 
         <!-- 取引リスト -->
-        <CollectionView ItemsSource="{Binding FilteredTransactions}"
-                        Grid.Row="3">
+        <CollectionView
+            ItemsSource="{Binding FilteredTransactions}"
+            Grid.Row="3">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Transaction">
-                    <SwipeView
-                        Margin="5">
+                    <SwipeView Margin="5">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
@@ -89,11 +99,13 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="80"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Row="0"
-                                   Grid.Column="0"
-                                   Text="{Binding Date, StringFormat='{0:d日(ddd)}'}"/>
-                            <Label Grid.Row="0"
-                                   Grid.Column="1">
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Text="{Binding Date, StringFormat='{0:d日(ddd)}'}"/>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1">
                                 <Label.FormattedText>
                                     <FormattedString>
                                         <Span Text="{Binding FromAccount.Name}"/>
@@ -102,29 +114,35 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Label Grid.Row="0"
-                                   Grid.Column="2"
-                                   Text="{Binding Category.Name}"/>
-                            <Label Grid.Row="1"
-                                   Grid.Column="0"
-                                   Text="{Binding Type, Converter={StaticResource TransactionTypeToStringConverter}}"/>
-                            <Label Grid.Row="1"
-                                   Grid.Column="1"
-                                   Text="{Binding Note}"/>
-                            <Label Grid.Row="1"
-                                   Grid.Column="2"
-                                   Text="{Binding Amount, StringFormat='{0:C}'}"/>
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Text="{Binding Category.Name}"/>
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Text="{Binding Type, Converter={StaticResource TransactionTypeToStringConverter}}"/>
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Text="{Binding Note}"/>
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Text="{Binding Amount, StringFormat='{0:C}'}"/>
                         </Grid>
                         <SwipeView.RightItems>
                             <SwipeItems Mode="Reveal">
-                                <SwipeItem Text="変更"
-                                           BackgroundColor="DarkBlue"
-                                           Command="{Binding BindingContext.GoToEditTransactionCommand, Source={x:Reference Page}}"
-                                           CommandParameter="{Binding Id}"/>
-                                <SwipeItem Text="削除"
-                                           BackgroundColor="DarkRed"
-                                           Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Page}}"
-                                           CommandParameter="{Binding}"/>
+                                <SwipeItem
+                                    Text="変更"
+                                    BackgroundColor="DarkBlue"
+                                    Command="{Binding BindingContext.GoToEditTransactionCommand, Source={x:Reference Page}}"
+                                    CommandParameter="{Binding Id}"/>
+                                <SwipeItem
+                                    Text="削除"
+                                    BackgroundColor="DarkRed"
+                                    Command="{Binding BindingContext.DeleteTransactionCommand, Source={x:Reference Page}}"
+                                    CommandParameter="{Binding}"/>
                             </SwipeItems>
                         </SwipeView.RightItems>
                     </SwipeView>

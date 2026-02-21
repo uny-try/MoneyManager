@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:MoneyManager.Models"
-             xmlns:viewModels="clr-namespace:MoneyManager.ViewModels"
-             xmlns:converters="clr-namespace:MoneyManager.Converters"
-             x:Class="MoneyManager.Views.EditTransactionPage"
-             x:DataType="viewModels:EditTransactionViewModel"
-             Title="取引編集">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:MoneyManager.Models"
+    xmlns:viewModels="clr-namespace:MoneyManager.ViewModels"
+    xmlns:converters="clr-namespace:MoneyManager.Converters"
+    x:Class="MoneyManager.Views.EditTransactionPage"
+    x:DataType="viewModels:EditTransactionViewModel"
+    Title="取引編集">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:TransactionTypeToBoolConverter x:Key="TransactionTypeToBoolConverter"/>
@@ -15,17 +16,21 @@
 
     <VerticalStackLayout>
         <!-- タイプ選択用ラジオボタン -->
-        <HorizontalStackLayout RadioButtonGroup.GroupName="TransactionTypeGroup"
-                               RadioButtonGroup.SelectedValue="{Binding SelectedTransactionType, Mode=TwoWay}">
-            <RadioButton Content="収入"
-                         Value="{x:Static models:TransactionType.Income}"
-                         Margin="5,0"/>
-            <RadioButton Content="支出"
-                         Value="{x:Static models:TransactionType.Expense}"
-                         Margin="5,0"/>
-            <RadioButton Content="振替"
-                         Value="{x:Static models:TransactionType.Transfer}"
-                         Margin="5,0"/>
+        <HorizontalStackLayout
+            RadioButtonGroup.GroupName="TransactionTypeGroup"
+            RadioButtonGroup.SelectedValue="{Binding SelectedTransactionType, Mode=TwoWay}">
+            <RadioButton
+                Content="収入"
+                Value="{x:Static models:TransactionType.Income}"
+                Margin="5,0"/>
+            <RadioButton
+                Content="支出"
+                Value="{x:Static models:TransactionType.Expense}"
+                Margin="5,0"/>
+            <RadioButton
+                Content="振替"
+                Value="{x:Static models:TransactionType.Transfer}"
+                Margin="5,0"/>
         </HorizontalStackLayout>
 
         <!-- 日付ピッカー -->
@@ -36,16 +41,18 @@
         <StackLayout IsVisible="{Binding SelectedTransactionType,
                                  Converter={StaticResource TransactionTypeToBoolConverter},
                                  ConverterParameter=Income}">
-            <Picker Title="入金口座"
-                    ItemsSource="{Binding Accounts}"
-                    SelectedItem="{Binding ToAccount}">
+            <Picker
+                Title="入金口座"
+                ItemsSource="{Binding Accounts}"
+                SelectedItem="{Binding ToAccount}">
                 <Picker.ItemDisplayBinding>
                     <Binding Path="Name"/>
                 </Picker.ItemDisplayBinding>
             </Picker>
-            <Picker Title="分類"
-                    ItemsSource="{Binding IncomeCategories}"
-                    SelectedItem="{Binding Category}">
+            <Picker
+                Title="分類"
+                ItemsSource="{Binding IncomeCategories}"
+                SelectedItem="{Binding Category}">
                 <Picker.ItemDisplayBinding>
                     <Binding Path="Name"/>
                 </Picker.ItemDisplayBinding>
@@ -53,19 +60,22 @@
         </StackLayout>
 
         <!-- 支出用フィールド -->
-        <StackLayout IsVisible="{Binding SelectedTransactionType,
-                                 Converter={StaticResource TransactionTypeToBoolConverter},
-                                 ConverterParameter=Expense}">
-            <Picker Title="出金口座"
-                    ItemsSource="{Binding Accounts}"
-                    SelectedItem="{Binding FromAccount}">
+        <StackLayout
+            IsVisible="{Binding SelectedTransactionType,
+                Converter={StaticResource TransactionTypeToBoolConverter},
+                ConverterParameter=Expense}">
+            <Picker
+                Title="出金口座"
+                ItemsSource="{Binding Accounts}"
+                SelectedItem="{Binding FromAccount}">
                 <Picker.ItemDisplayBinding>
                     <Binding Path="Name"/>
                 </Picker.ItemDisplayBinding>
             </Picker>
-            <Picker Title="分類"
-                    ItemsSource="{Binding ExpenseCategories}"
-                    SelectedItem="{Binding Category}">
+            <Picker
+                Title="分類"
+                ItemsSource="{Binding ExpenseCategories}"
+                SelectedItem="{Binding Category}">
                 <Picker.ItemDisplayBinding>
                     <Binding Path="Name"/>
                 </Picker.ItemDisplayBinding>
@@ -73,19 +83,22 @@
         </StackLayout>
 
         <!-- 振替用フィールド -->
-        <StackLayout IsVisible="{Binding SelectedTransactionType,
-                                 Converter={StaticResource TransactionTypeToBoolConverter},
-                                 ConverterParameter=Transfer}">
-            <Picker Title="出金口座"
-                    ItemsSource="{Binding Accounts}"
-                    SelectedItem="{Binding FromAccount}">
+        <StackLayout
+            IsVisible="{Binding SelectedTransactionType,
+                Converter={StaticResource TransactionTypeToBoolConverter},
+                ConverterParameter=Transfer}">
+            <Picker
+                Title="出金口座"
+                ItemsSource="{Binding Accounts}"
+                SelectedItem="{Binding FromAccount}">
                 <Picker.ItemDisplayBinding>
                     <Binding Path="Name"/>
                 </Picker.ItemDisplayBinding>
             </Picker>
-            <Picker Title="入金口座"
-                    ItemsSource="{Binding Accounts}"
-                    SelectedItem="{Binding ToAccount}">
+            <Picker
+                Title="入金口座"
+                ItemsSource="{Binding Accounts}"
+                SelectedItem="{Binding ToAccount}">
                 <Picker.ItemDisplayBinding>
                     <Binding Path="Name"/>
                 </Picker.ItemDisplayBinding>
@@ -93,22 +106,26 @@
         </StackLayout>
 
         <!-- 金額用フィールド -->
-        <Entry Placeholder="金額"
-               Keyboard="Numeric"
-               Text="{Binding Amount}"/>
+        <Entry
+            Placeholder="金額"
+            Keyboard="Numeric"
+            Text="{Binding Amount}"/>
 
         <!-- メモ用フィールド -->
-        <Entry Placeholder="メモ"
-               Text="{Binding Note}"/>
+        <Entry
+            Placeholder="メモ"
+            Text="{Binding Note}"/>
 
         <!-- 保存・キャンセルボタン -->
         <HorizontalStackLayout>
-            <Button Text="キャンセル"
-                    Command="{Binding CancelCommand}"
-                    HorizontalOptions="CenterAndExpand"/>
-            <Button Text="保存"
-                    Command="{Binding SaveTransactionCommand}"
-                    HorizontalOptions="CenterAndExpand"/>
+            <Button
+                Text="キャンセル"
+                Command="{Binding CancelCommand}"
+                HorizontalOptions="CenterAndExpand"/>
+            <Button
+                Text="保存"
+                Command="{Binding SaveTransactionCommand}"
+                HorizontalOptions="CenterAndExpand"/>
         </HorizontalStackLayout>
 
     </VerticalStackLayout>

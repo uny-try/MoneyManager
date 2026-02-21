@@ -15,8 +15,9 @@ public partial class AccountSummaryViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<Account> accounts;
 
-    public AccountSummaryViewModel(ITransactionRepository transactionRepository,
-                            IAccountRepository accountRepository)
+    public AccountSummaryViewModel(
+        ITransactionRepository transactionRepository,
+        IAccountRepository accountRepository)
     {
         _transactionRepository = transactionRepository;
         _accountRepository = accountRepository;
@@ -40,9 +41,9 @@ public partial class AccountSummaryViewModel : ObservableObject
 
         foreach (var transaction in transactions)
         {
-            if(transaction.FromAccount is not null)
+            if (transaction.FromAccount is not null)
             {
-                if(transaction.Date <= today)
+                if (transaction.Date <= today)
                 {
                     transaction.FromAccount.Balance -= transaction.Amount;
                 }
@@ -52,9 +53,9 @@ public partial class AccountSummaryViewModel : ObservableObject
                 }
             }
 
-            if(transaction.ToAccount is not null)
+            if (transaction.ToAccount is not null)
             {
-                if(transaction.Date <= today)
+                if (transaction.Date <= today)
                 {
                     transaction.ToAccount.Balance += transaction.Amount;
                 }

@@ -28,11 +28,17 @@ public partial class AllTransactionsViewModel : ObservableObject
     [ObservableProperty]
     private Account accountFilter;
 
-    public AllTransactionsViewModel(ITransactionRepository transactionRepository, IAccountRepository accountRepository, INavigationService navigationService)
+    public AllTransactionsViewModel(
+        ITransactionRepository transactionRepository,
+        IAccountRepository accountRepository,
+        INavigationService navigationService)
     {
-        _transactionRepository = transactionRepository ?? throw new ArgumentNullException(nameof(transactionRepository));
-        _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository));
-        _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+        _transactionRepository = transactionRepository
+            ?? throw new ArgumentNullException(nameof(transactionRepository));
+        _accountRepository = accountRepository
+            ?? throw new ArgumentNullException(nameof(accountRepository));
+        _navigationService = navigationService
+            ?? throw new ArgumentNullException(nameof(navigationService));
 
         AllTransactions = new ObservableCollection<Transaction>();
         FilteredTransactions = new ObservableCollection<Transaction>();
@@ -83,8 +89,14 @@ public partial class AllTransactionsViewModel : ObservableObject
     private void LoadFilteredTransactions()
     {
         FilteredTransactions = new ObservableCollection<Transaction>(
-            AllTransactions.Where(t => t.Date.Month == CurrentMonth.Month && t.Date.Year == CurrentMonth.Year)
-                            .Where(t => AccountFilter.Name == "すべて" || t.FromAccount?.Name == AccountFilter.Name || t.ToAccount?.Name == AccountFilter.Name)
+            AllTransactions
+                .Where(
+                    t => t.Date.Month == CurrentMonth.Month
+                    && t.Date.Year == CurrentMonth.Year)
+                .Where(
+                    t => AccountFilter.Name == "すべて"
+                    || t.FromAccount?.Name == AccountFilter.Name
+                    || t.ToAccount?.Name == AccountFilter.Name)
         );
 
         FilteredTotalIncome = FilteredTransactions
