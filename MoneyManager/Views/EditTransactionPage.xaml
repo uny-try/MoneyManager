@@ -120,12 +120,10 @@
         <HorizontalStackLayout>
             <Button
                 Text="キャンセル"
-                Command="{Binding CancelCommand}"
-                HorizontalOptions="CenterAndExpand"/>
+                Command="{Binding CancelCommand}"/>
             <Button
                 Text="保存"
-                Command="{Binding SaveTransactionCommand}"
-                HorizontalOptions="CenterAndExpand"/>
+                Command="{Binding SaveTransactionCommand}"/>
         </HorizontalStackLayout>
 
     </VerticalStackLayout>
